@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Grafo</title>
+  </head>
+
+  <body class="h-screen p-4 bg-slate-200 ml-5 mr-5">
+    <div class="flex flex-row gap-4">
+      <div class="bg-blue-300 p-4 rounded-xl">
+        <p class="text-xl font-bold mb-2 text-center text-zinc-800">
+          Agregar o Borrar Arista
+        </p>
+        <input
+          class="rounded-lg text-lg bg-white transition w-20 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
+          type="text"
+          id="vertice1"
+          placeholder="V1"
+          maxlength="3"
+        />
+        <input
+          class="rounded-lg text-lg bg-white transition w-20 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
+          type="text"
+          id="vertice2"
+          placeholder="V2"
+          maxlength="3"
+        />
+        <select
+          name="aristas"
+          id="aristas"
+          class="mt-2 rounded-lg text-lg text-white transition w-20 h-10 text-black border-none text-center font-bold focus:outline-none hover:bg-green-600 bg-green-700"
+        >
+          <option value="agregar">Agregar</option>
+          <option value="borrar">Borrar</option>
+        </select>
+        <button
+          class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-20 h-10 font-bold inline-block"
+          type="submit"
+          id="cargarVertice"
+          onclick="manejarAristas()"
+        >
+          Enviar
+        </button>
+      </div>
+      <div class="bg-blue-300 p-4 rounded-xl">
+        <p class="text-xl font-bold mb-2 text-center text-zinc-800">
+          Agregar o Borrar Vertice
+        </p>
+        <input
+          class="rounded-lg text-lg bg-white transition w-20 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
+          type="text"
+          id="vertice"
+          placeholder="Vertice"
+          maxlength="3"
+        />
+        <select
+          name="vertice"
+          id="vertices"
+          class="mt-2 rounded-lg text-lg bg-green-700 transition w-20 h-10 text-white border-none text-center font-bold focus:outline-none hover:bg-green-600"
+        >
+          <option value="agregar" class="font-bold">Agregar</option>
+          <option value="borrar" class="font-bold">Borrar</option>
+        </select>
+        <button
+          class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-20 h-10 font-bold inline-block"
+          type="submit"
+          id="cargarVertice"
+          onclick="manejarVertice()"
+        >
+          Enviar
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center bg-blue-300 p-4 rounded-xl">
+        <p class="text-xl font-bold mb-2 text-zinc-800">Vaciar Grafo</p>
+        <button
+          class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-20 h-10 font-bold inline-block text-center"
+          type="submit"
+          id="vaciarGrafo"
+          onclick="vaciarGrafo()"
+        >
+          Vaciar
+        </button>
+      </div>
+    </div>
+    <div
+      id="cy"
+      class="w-full h-screen bg-white shadow-2xl rounded-xl mt-6 mb-10"
+    ></div>
+
+    <script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
+    <script type="module">
+      import { inicializarGrafo } from "/client/cytoscape/paint.js";
+      inicializarGrafo();
+    </script>
+
+    <script type="module">
+      import {
+        vaciarGrafoAPI,
+        addVerticeAPI,
+        addAristaAPI,
+        removeAristaAPI,
+        removeVerticeAPI,
+      } from "/client/js/connection.js";
+
+      window.vaciarGrafo = function vaciarGrafo() {
+        vaciarGrafoAPI().then(() => {
+          location.reload();
+        });
+      };
+
+      window.manejarVertice = function manejarVertice() {
+        const v = document.getElementById("vertice").value;
+        const verticeOption = document.getElementById("vertices").value;
+
+        if (verticeOption === "agregar") {
+          addVerticeAPI(v).then(() => {
+            location.reload();
+          });
+        } else if (verticeOption === "borrar") {
+          removeVerticeAPI(v).then(() => {
+            location.reload();
+          });
+        }
+      };
+
+      window.manejarAristas = function manejarAristas() {
+        const v1 = document.getElementById("vertice1").value;
+        const v2 = document.getElementById("vertice2").value;
+        const aristaOption = document.getElementById("aristas").value;
+
+        if (aristaOption === "agregar") {
+          addAristaAPI(v1, v2).then(() => {
+            location.reload();
+          });
+        } else if (aristaOption === "borrar") {
+          removeAristaAPI(v1, v2).then(() => {
+            location.reload();
+          });
+        }
+      };
+    </script>
+  </body>
+</html>

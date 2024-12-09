@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arbol Binario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-screen p-4 bg-slate-200 ml-5 mr-5">
+    <div class="flex flex-row gap-4">
+      <input
+        type="text"
+        id="nodeValue"
+        placeholder="Valor del nodo"
+        class="rounded-lg text-lg bg-white transition w-32 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
+      />
+      <button
+        onclick="insertNode()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Insertar Nodo
+      </button>
+      <button
+        onclick="deleteNode()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Eliminar Nodo
+      </button>
+      <button
+        onclick="clearTree()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Vaciar Arbol
+      </button>
+      <button
+        onclick="getHeight()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Altura
+      </button>
+      <button
+        onclick="getCantNodes()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Cant. Nodos
+      </button>
+      <button
+        onclick="searchNode()"
+        class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
+      >
+        Buscar
+      </button>
+    </div>
+    <div
+      id="cy"
+      class="w-full h-screen bg-white shadow-2xl rounded-xl mt-6 mb-10"
+    ></div>
+
+    <script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
+    <script type="module">
+      import { inicializarGrafo } from "/client/cytoscape/paint.js";
+      inicializarGrafo();
+    </script>
+    <script type="module">
+      import { searchNodePaint } from "/client/cytoscape/paint.js";
+      //funcion para buscar un nodo y pintarlo
+      window.searchNode = function searchNode() {
+        const value = document.getElementById("nodeValue").value;
+        if (value === "") {
+          alert("Por favor ingresa un valor.");
+        } else {
+          searchNodePaint(value);
+        }
+      };
+    </script>
+    <script type="module">
+      import {
+        deleteNodeAPI,
+        insertNodeAPI,
+        vaciarTreeAPI,
+        getCantNodesAPI,
+        getHeightAPI,
+      } from "/client/js/connection.js";
+
+      window.getCantNodes = async function getCantNodes() {
+        const cantNodes = await getCantNodesAPI();
+        alert("Cantidad de nodos: " + cantNodes);
+      };
+
+      window.getHeight = async function getHeight() {
+        const height = await getHeightAPI();
+        alert("Altura: " + height);
+      };
+
+      //Funcion para vaciar el arbol
+      window.clearTree = function clearTree() {
+        vaciarTreeAPI().then(() => {
+          location.reload(); // Recargar la página después de vaciar
+        });
+      };
+
+      // Función para insertar nodo
+      window.insertNode = function insertNode() {
+        const value = document.getElementById("nodeValue").value;
+        if (value === "") {
+          alert("Por favor ingresa un valor.");
+        } else {
+          insertNodeAPI(value).then(() => {
+            location.reload(); // Recargar la página después de insertar
+          });
+        }
+      };
+
+      // Función para manejar la eliminación del nodo
+      window.deleteNode = function deleteNode() {
+        const value = document.getElementById("nodeValue").value;
+        if (value === "") {
+          alert("Por favor ingresa un valor.");
+        } else {
+          deleteNodeAPI(value).then(() => {
+            location.reload(); // Recargar la página después de eliminar
+          });
+        }
+      };
+    </script>
+  </body>
+</html>
