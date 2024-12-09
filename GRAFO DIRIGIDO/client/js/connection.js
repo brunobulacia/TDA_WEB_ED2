@@ -31,14 +31,14 @@ export async function getGrafoAPI() {
   }
 }
 
-export async function addAristaAPI(v1, v2) {
+export async function addAristaAPI(v1, v2, peso) {
   try {
     const response = await fetch("http://localhost:5000/add_arista", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ v1, v2 }),
+      body: JSON.stringify({ v1, v2, peso }),
     });
     if (!response.ok) {
       const errorData = await response.json();

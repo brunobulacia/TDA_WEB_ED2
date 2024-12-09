@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from grafoNoPesado import Grafo, Vertice
+from grafoPesado import Grafo, Vertice
 
 grafo = Grafo()
 
@@ -31,7 +31,8 @@ def add_arista():
         data = request.get_json()
         v1 = data['v1']
         v2 = data['v2']
-        grafo.add_arista(v1, v2)
+        peso = data['peso']
+        grafo.add_arista(v1, v2, peso)
         return jsonify({'message': 'Arista agregada'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500

@@ -27,6 +27,13 @@
           placeholder="V2"
           maxlength="3"
         />
+        <input
+          class="rounded-lg text-lg bg-white transition w-20 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
+          type="text"
+          id="peso"
+          placeholder="Peso"
+          maxlength="3"
+        />
         <select
           name="aristas"
           id="aristas"
@@ -129,10 +136,11 @@
       window.manejarAristas = function manejarAristas() {
         const v1 = document.getElementById("vertice1").value;
         const v2 = document.getElementById("vertice2").value;
+        const peso = document.getElementById("peso").value;
         const aristaOption = document.getElementById("aristas").value;
 
         if (aristaOption === "agregar") {
-          addAristaAPI(v1, v2).then(() => {
+          addAristaAPI(v1, v2, peso).then(() => {
             location.reload();
           });
         } else if (aristaOption === "borrar") {

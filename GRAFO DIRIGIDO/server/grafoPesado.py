@@ -1,10 +1,10 @@
 class Vertice:
     def __init__(self, vertice_id):
         self.id = vertice_id
-        self.vecinos = set()  # Usar un conjunto para evitar duplicados y mejorar eficiencia.
+        self.vecinos = {}  # Usar un conjunto para evitar duplicados y mejorar eficiencia.
 
-    def add_vecino(self, vecino):
-        self.vecinos.add(vecino)  # Inserción rápida con un set.
+    def add_vecino(self, vecino, peso):
+        self.vecinos[vecino] = peso  # Inserción rápida con un set.
 
     def get_vecinos(self):
         return self.vecinos  # Devolver los vecinos.
@@ -14,6 +14,9 @@ class Vertice:
 
     def existe_vecino(self, vecino):
         return vecino in self.vecinos
+
+    def get_peso(self, vecino):
+        return self.vecinos.get(vecino, None)
 
 class Grafo:
     def __init__(self):
@@ -54,14 +57,12 @@ class Grafo:
         return True
 
 
-    def add_arista(self, v1, v2):
+    def add_arista(self, v1, v2, peso):
         if v1 not in self.vertices or v2 not in self.vertices:
             raise KeyError("Ambos vértices deben existir en el grafo.")
-        if self.vertices[v1].existe_vecino(v2) or self.vertices[v2].existe_vecino(v1):
+        if self.vertices[v1].existe_vecino(v2):
             raise ValueError("La arista ya existe.")
-
-        self.vertices[v1].add_vecino(v2)
-        # self.vertices[v2].add_vecino(v1)
+        self.vertices[v1].add_vecino(v2, peso)
         return True
     
 
@@ -87,7 +88,7 @@ class Grafo:
 
     def get_grafo(self):
         return {
-            vertice.id: list(sorted(vertice.vecinos))
+            vertice.id: [(vecino, peso) for vecino, peso in vertice.vecinos.items()]
             for vertice in self.vertices.values()
         }
 

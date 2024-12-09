@@ -14,13 +14,12 @@ export function initializeCytoscape() {
           "text-halign": "center",
           "text-valign": "center",
           label: "data(id)", // Mostrar el nombre del estado
-          "font-size": 16,
+          "font-size": 14,
           "font-weight": "bold",
           color: "#FFFFFF", // Texto blanco
-          width: 50,
-          height: 50,
+          width: 32,
+          height: 32,
           "text-outline-color": "#1E3A8A", // Contorno de texto para mayor visibilidad
-          "text-outline-width": 2,
         },
       },
 
@@ -33,15 +32,15 @@ export function initializeCytoscape() {
           "target-arrow-color": "#F59E0B", // Flechas del mismo color
           "target-arrow-shape": "triangle",
           "curve-style": "bezier", // Líneas curvas
-          "font-size": 18,
+          // label: "data(id)", // Mostrar etiquetas de las aristas (si se usan)
+          "font-size": 12,
           color: "#1E3A8A", // Texto azul oscuro para contraste
-          "text-background-opacity": 0,
+          "text-background-opacity": 1,
           "text-background-color": "#FFFFFF", // Fondo blanco para texto
           "text-border-color": "#3B82F6",
-          "text-border-width": 1,
+          // "text-border-width": 1,
           "text-rotation": "autorotate",
           "text-margin-y": -8, // Ajustar posición del texto
-          "text-margin-x": 10,
         },
       },
     ],

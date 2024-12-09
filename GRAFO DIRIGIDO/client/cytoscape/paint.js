@@ -17,10 +17,13 @@ export async function addVertices() {
       group: "nodes",
       data: { id: vertice, label: vertice },
     });
-    for (const vecino of vecinos) {
+    for (const [vecino, peso] of vecinos) {
       aristas.push({
         group: "edges",
         data: { id: `${vertice}-${vecino}`, source: vertice, target: vecino },
+        style: {
+          label: `${peso}`,
+        },
       });
     }
   }
