@@ -1,3 +1,6 @@
+import heapq
+from collections import deque
+
 class Vertice:
     def __init__(self, vertice_id):
         self.id = vertice_id
@@ -95,4 +98,103 @@ class Grafo:
     def clear(self):
         self.vertices.clear()
     
+    def dijkstra(self, inicio, fin):
+        if inicio not in self.vertices or fin not in self.vertices:
+            raise KeyError("Ambos vértices deben existir en el grafo.")
+        
+        distancias = {vertice: float('infinity') for vertice in self.vertices}
+        distancias[inicio] = 0
+        camino = {vertice: None for vertice in self.vertices}
+        pq = [(0, inicio)]
+
+        while pq:
+            (dist_actual, vertice_actual) = heapq.heappop(pq)
+
+            if dist_actual > distancias[vertice_actual]:
+                continue
+
+            for vecino, peso in self.vertices[vertice_actual].get_vecinos().items():
+                distancia = dist_actual + peso
+
+                if distancia < distancias[vecino]:
+                    distancias[vecino] = distancia
+                    camino[vecino] = vertice_actual
+                    heapq.heappush(pq, (distancia, vecino))
+
+        ruta = []
+        paso = fin
+        while paso is not None:
+            ruta.insert(0, paso)
+            paso = camino[paso]
+
+        if distancias[fin] == float('infinity'):
+            return None  # No hay camino
+
+        return ruta, distancias[fin]
     
+    def bfs(self, inicio):
+        if inicio not in self.vertices:
+            raise KeyError("El vértice de inicio debe existir en el grafo.")
+        
+        visitados = set()
+        cola = deque([inicio])
+        recorrido = []
+
+        while cola:
+            vertice_actual = cola.popleft()
+            if vertice_actual not in visitados:
+                visitados.add(vertice_actual)
+                recorrido.append(vertice_actual)
+                for vecino in self.vertices[vertice_actual].get_vecinos():
+                    if vecino not in visitados:
+                        cola.append(vecino)
+
+        return recorrido
+
+    def dfs(self, inicio):
+        if inicio not in self.vertices:
+            raise KeyError("El vértice de inicio debe existir en el grafo.")
+        
+        visitados = set()
+        pila = [inicio]
+        recorrido = []
+
+        while pila:
+            vertice_actual = pila.pop()
+            if vertice_actual not in visitados:
+                visitados.add(vertice_actual)
+                recorrido.append(vertice_actual)
+                for vecino in self.vertices[vertice_actual].get_vecinos():
+                    if vecino not in visitados:
+                        pila.append(vecino)
+
+        return recorrido
+
+
+# Crear el grafo
+grafo = Grafo()
+
+# Agregar vértices
+for vertice_id in ['A', 'E', 'C', 'D', 'B']:
+    grafo.add_vertice(Vertice(vertice_id))
+
+# Agregar aristas con pesos
+grafo.add_arista('A', 'B', 1)
+grafo.add_arista('A', 'C', 4)
+grafo.add_arista('B', 'C', 2)
+grafo.add_arista('B', 'D', 5)
+grafo.add_arista('C', 'D', 1)
+grafo.add_arista('D', 'E', 3)
+
+# Probar el método dijkstra
+inicio = 'A'
+fin = 'E'
+ruta, distancia = grafo.dijkstra(inicio, fin)
+# Probar el método bfs
+inicio_bfs = 'B'
+recorrido_bfs = grafo.bfs(inicio_bfs)
+print(f"Recorrido BFS desde {inicio_bfs}: {recorrido_bfs}")
+# Probar el método dfs
+inicio_dfs = 'B'
+recorrido_dfs = grafo.dfs(inicio_dfs)
+print(f"Recorrido DFS desde {inicio_dfs}: {recorrido_dfs}")

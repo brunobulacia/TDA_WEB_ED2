@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grafo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <body>
+    <button onclick="sayHi()">Click</button>
+    <div
+      id="cy"
+      style="
+        background-color: burlywood;
+        width: 90%;
+        height: 100vh;
+        margin: 0 auto;
+      "
+    ></div>
+    <script src="/client/node_modules/cytoscape/dist/cytoscape.min.js"></script>
+    <script type="module">
+      import { inicializarGrafo } from "./cytoscape/paint.js";
+      inicializarGrafo();
+    </script>
+    <script type="module">
+      import { consumeAPI } from "./js/connection.js";
+      window.sayHi = function sayHi() {
+        consumeAPI();
+      };
+    </script>
+  </body>
+</html>

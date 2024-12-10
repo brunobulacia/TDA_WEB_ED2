@@ -27,7 +27,7 @@ export async function getRoot() {
     throw new Error("No hay nodos disponibles en el árbol.");
   }
 }
-
+/*
 // Función para obtener todos los nodos del árbol (excepto la raíz)
 export async function getNodes() {
   // nodes = await getTreeAPI();
@@ -65,12 +65,12 @@ export async function vaciarTreeAPI() {
     alert(error);
     return null;
   }
-}
+} */
 
-export async function insertNodeAPI(nodo) {
+export async function insertarDatoAPI(nodo) {
   try {
     console.log(JSON.stringify({ nodo }));
-    const response = await fetch("http://localhost:5000/insert_node", {
+    const response = await fetch("http://localhost:5000/insertar_dato", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export async function insertNodeAPI(nodo) {
 
 export async function deleteNodeAPI(nodo) {
   try {
-    const response = await fetch("http://localhost:5000/delete_node", {
+    const response = await fetch("http://localhost:5000/eliminar_dato", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

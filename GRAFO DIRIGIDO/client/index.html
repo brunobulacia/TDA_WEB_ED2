@@ -41,6 +41,9 @@
         >
           <option value="agregar">Agregar</option>
           <option value="borrar">Borrar</option>
+          <option value="dijkstra">Dijkstra</option>
+          <option value="bfs">BFS</option>
+          <option value="dfs">DFS</option>
         </select>
         <button
           class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-20 h-10 font-bold inline-block"
@@ -110,6 +113,9 @@
         addAristaAPI,
         removeAristaAPI,
         removeVerticeAPI,
+        dijkstraAPI,
+        bfsAPI,
+        dfsAPI,
       } from "/client/js/connection.js";
 
       window.vaciarGrafo = function vaciarGrafo() {
@@ -146,6 +152,18 @@
         } else if (aristaOption === "borrar") {
           removeAristaAPI(v1, v2).then(() => {
             location.reload();
+          });
+        } else if (aristaOption === "dijkstra") {
+          dijkstraAPI(v1, v2).then(() => {
+            // location.reload();
+          });
+        } else if (aristaOption === "bfs") {
+          bfsAPI(v1).then(() => {
+            // location.reload();
+          });
+        } else if (aristaOption === "dfs") {
+          dfsAPI(v1).then(() => {
+            // location.reload();
           });
         }
       };

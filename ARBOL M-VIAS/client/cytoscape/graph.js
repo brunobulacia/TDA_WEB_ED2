@@ -17,8 +17,9 @@ export function initializeCytoscape() {
           "font-size": 14,
           "font-weight": "bold",
           color: "#FFFFFF", // Texto blanco
-          width: 32,
+          // width: 100,
           height: 32,
+          shape: "rectangle",
           "text-outline-color": "#1E3A8A", // Contorno de texto para mayor visibilidad
         },
       },

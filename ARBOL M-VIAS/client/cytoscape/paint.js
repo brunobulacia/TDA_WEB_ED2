@@ -1,5 +1,6 @@
 import { cy, initializeCytoscape } from "/client/cytoscape/graph.js";
-import { getNodes, getRoot } from "/client/js/connection.js";
+// import { getNodes, getRoot } from "/client/js/connection.js";
+import { getTreeAPI } from "../js/connection.js";
 let nodes = [];
 let edges = [];
 
@@ -7,44 +8,48 @@ export async function inicializarGrafo() {
   await initializeCytoscape();
   await addVertices();
   await addAristas();
-  ajustarGrafo();
+  // ajustarGrafo();
 }
 
 export async function addVertices() {
-  const root = await getRoot();
-  const nodos = await getNodes();
-  nodes.push({
-    data: {
-      id: String(root),
-    },
-    position: { x: 100, y: -40 },
-  });
-  nodos.forEach((node) => {
-    nodes.push({
-      data: {
-        id: String(node[0]),
-      },
-      position: { x: 0, y: 0 },
-    });
-  });
-  console.log(nodes);
-  cy.add(nodes);
+  nodes = await getTreeAPI();
+  console.log(Object.entries(nodes));
+  let fuck = [];
+  for (const [key, value] of Object.entries(nodes)) {
+    // console.log(key, value);
+    for (let i = 0; i < value.length; i++) {
+      console.log(value[i]);
+      fuck.push({
+        data: {
+          id: String(value[i][0]),
+        },
+        style: {
+          width: value[i][0].length * 30 + 10,
+        },
+      });
+    }
+  }
+  cy.add(fuck);
 }
-
 export async function addAristas() {
-  const nodos = await getNodes();
-  nodos.forEach((node) => {
-    edges.push({
-      data: {
-        id: String(node[1]) + "-" + String(node[0]),
-        source: String(node[1]), // El padre
-        target: String(node[0]), // El nodo actual
-      },
-    });
-  });
-  cy.add(edges);
-  console.log(edges);
+  nodes = await getTreeAPI();
+  console.log(Object.entries(nodes));
+  let aristas = [];
+  for (const [key, value] of Object.entries(nodes)) {
+    for (let i = 0; i < value.length; i++) {
+      aristas.push({
+        data: {
+          id: String(value[i][1]) + "-" + String(value[i][0]),
+          source: String(value[i][1]), // El padre
+          target: String(value[i][0]), // El nodo actual
+        },
+      });
+    }
+  }
+  console.log(aristas.slice(1, aristas.length));
+  cy.add(aristas.slice(1, aristas.length));
 }
+/*
 
 async function ajustarGrafo() {
   const nodos = await getNodes();
@@ -73,7 +78,7 @@ async function ajustarGrafo() {
     // Actualizamos la posición del nodo hijo
     child.position({ x: posX, y: posY });
   });
-}
+} */
 
 export function searchNodePaint(e) {
   let foundNode = null;

@@ -15,7 +15,7 @@
         class="rounded-lg text-lg bg-white transition w-32 h-10 text-black border text-center focus:border-black focus:border-2 focus:outline-none"
       />
       <button
-        onclick="insertNode()"
+        onclick="getTree()"
         class="rounded-lg text-lg bg-blue-900 text-white hover:bg-blue-700 transition w-40 h-10 font-bold inline-block"
       >
         Insertar Nodo
@@ -74,15 +74,14 @@
       };
     </script>
     <script type="module">
-      import {
-        deleteNodeAPI,
-        insertNodeAPI,
-        vaciarTreeAPI,
-        getCantNodesAPI,
-        getHeightAPI,
-      } from "/client/js/connection.js";
+      import { getTreeAPI } from "/client/js/connection.js";
 
-      window.getCantNodes = async function getCantNodes() {
+      window.getTree = async function getTree() {
+        getTreeAPI().then(() => {
+          console.log("Arbol cargado");
+        });
+      };
+      /* window.getCantNodes = async function getCantNodes() {
         const cantNodes = await getCantNodesAPI();
         alert("Cantidad de nodos: " + cantNodes);
       };
@@ -121,7 +120,7 @@
             location.reload(); // Recargar la página después de eliminar
           });
         }
-      };
+      }; */
     </script>
   </body>
 </html>
